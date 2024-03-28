@@ -18,7 +18,9 @@ function App() {
     }[]
   >([]);
 
-  const socket = io("http://localhost:3000", { transports: ["websocket"] });
+  const websocket_host =
+    process.env.REACT_APP_WEBSOCKET_HOST || "http://localhost:3000";
+  const socket = io(websocket_host, { transports: ["websocket"] });
 
   socket.on("login_server", (responseFromServer) => {
     sessionStorage.setItem(
