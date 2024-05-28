@@ -1,27 +1,27 @@
-# name: Production
+name: Production
 
-# on: push
+on: push
 
-# jobs:
-#   build-node:
-#     runs-on: ubuntu-latest
-#     container: node:16
-#     environment: Production
-#     steps:
-#       - uses: actions/checkout@v3
-#       - run: node --version
-#       - run: echo "$SSH_PRIVATE_KEY | $SSH_HOST | $USER_NAME"
-#       - run: |
-#           echo "$SSH_PRIVATE_KEY" > SSH_PRIVATE_KEY && chmod 600 SSH_PRIVATE_KEY
-#           ssh -o StrictHostKeyChecking=no -i SSH_PRIVATE_KEY ${USER_NAME}@${SSH_HOST} '
-#             ls
-#             cd /home/ubuntu/random-chat-backend
-#             git pull origin main
-#             sudo docker stop random-chat-backend-container && sudo docker rm random-chat-backend-container
-#             sudo docker rmi $(docker images | grep 'random-chat-backend')
-#             sudo docker build -t random-chat-backend:v1 .
-#             sudo docker run -d -p 443:3000 --name random-chat-backend-container random-chat-backend:v1 '
-#     env:
-#         SSH_PRIVATE_KEY: ${{ vars.SSH_PRIVATE_KEY }}
-#         SSH_HOST: ${{ vars.SSH_HOST }}
-#         USER_NAME: ${{ vars.USER_NAME }}
+jobs:
+  build-node:
+    runs-on: ubuntu-latest
+    container: node:16
+    environment: Production
+    steps:
+      - uses: actions/checkout@v3
+      - run: node --version
+      - run: echo "$SSH_PRIVATE_KEY | $SSH_HOST | $USER_NAME"
+      - run: |
+          echo "$SSH_PRIVATE_KEY" > SSH_PRIVATE_KEY && chmod 600 SSH_PRIVATE_KEY
+          ssh -o StrictHostKeyChecking=no -i SSH_PRIVATE_KEY ${USER_NAME}@${SSH_HOST} '
+            ls
+            cd /home/ubuntu/random-chat-app-react
+            git pull origin main
+            sudo docker stop random-chat-app-react-container && sudo docker rm random-chat-app-react-container
+            sudo docker rmi $(docker images | grep 'random-chat-app-react')
+            sudo docker build -t random-chat-app-react:v1 .
+            sudo docker run -d -p 80:3000 --name random-chat-app-react-container random-chat-app-react:v1 '
+    env:
+        SSH_PRIVATE_KEY: ${{ vars.SSH_PRIVATE_KEY }}
+        SSH_HOST: ${{ vars.SSH_HOST }}
+        USER_NAME: ${{ vars.USER_NAME }}
