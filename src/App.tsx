@@ -22,6 +22,8 @@ function App() {
     process.env.REACT_APP_WEBSOCKET_HOST || "http://localhost:3000";
   const socket = io(websocket_host, { transports: ["websocket"] });
 
+  console.log("websocket_host===>", websocket_host);
+
   socket.on("login_server", (responseFromServer) => {
     sessionStorage.setItem(
       "client_id_room",
